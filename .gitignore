@@ -64,6 +64,9 @@ output/
 .coverage
 htmlcov/
 
+# ML models
+*.pt
+models/
 
 ski_cam_logs/
 screenshots/
