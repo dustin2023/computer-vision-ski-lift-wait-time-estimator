@@ -1,98 +1,98 @@
 # Ski Lift Wait Time Estimator
 
-Ein Computer Vision Projekt zur Schätzung der Wartezeit an Skiliften durch automatische Personenzählung mittels YOLOv11 Segmentation.
+A computer vision project that estimates ski lift wait times by automatically counting people using YOLOv11 segmentation.
 
-![Screenshot mit 28 Personen](screenshot_20251215_140903_count28.jpg)
+![Screenshot with 28 people](screenshot_20251215_140903_count28.jpg)
 
 
-## 📋 Überblick
+## 📋 Overview
 
-Dieses Projekt nutzt Deep Learning zur Echtzeitanalyse von Webcam-Streams an Skiliften. Das System detektiert und zählt Personen in einer definierten Region of Interest (ROI) und erstellt Visualisierungen sowie Logs für statistische Auswertungen.
+This project uses deep learning to analyze ski lift webcam streams in real time. The system detects and counts people inside a defined Region of Interest (ROI) and produces visualizations plus logs for statistical analysis.
 
-**Hauptfunktionen:**
-- Personendetektion mit YOLOv11 Segmentation
-- Unterstützung verschiedener Video-Quellen (lokale Dateien, YouTube, Webcams)
-- ROI-basierte Zählung mit automatischer Skalierung
-- Zeitstempel-basiertes Logging (CSV)
-- Live-Visualisierung mit Masken-Overlays
+**Key features:**
+- People detection with YOLOv11 segmentation
+- Supports multiple video sources (local files, YouTube, webcams)
+- ROI-based counting with automatic scaling
+- Timestamped logging (CSV)
+- Live visualization with mask overlays
 
 ## 🚀 Quickstart
 
-### Voraussetzungen
+### Prerequisites
 
 ```bash
-# Python 3.8+ erforderlich
+# Python 3.8+ required
 pip install -r requirements.txt
 ```
 
-### Ausführung
+### Run
 
-1. **Notebook öffnen**: `Ski_Lift_Wait_Time_Estimator_(Medium).ipynb`
+1. **Open the notebook**: `Ski_Lift_Wait_Time_Estimator_(Medium).ipynb`
 
-2. **Zellen der Reihe nach ausführen**:
-   - **Zelle 1**: Umgebungssetup (lokal/Colab)
-   - **Zelle 2**: Optional - Datei-Upload (nur Colab)
-   - **Zelle 3**: Hauptprogramm ausführen
+2. **Run cells in order**:
+   - **Cell 1**: Environment setup (local/Colab)
+   - **Cell 2**: Optional file upload (Colab only)
+   - **Cell 3**: Run the main program
 
-3. **Programm läuft automatisch 2 Minuten** und stoppt dann
+3. **Program runs for 2 minutes** and then stops
 
-### Konfiguration (optional)
+### Configuration (optional)
 
-In [src/config.py](src/config.py) können Parameter angepasst werden:
+Adjust parameters in [src/config.py](src/config.py):
 
 ```python
-MODE = "bergfex"              # Videoquelle: "file", "live", "bergfex", "feratel"
-MAX_SECONDS = 120             # Maximale Laufzeit in Sekunden
-CONF_THRESHOLD = 0.25         # Detection Confidence (0.0-1.0)
+MODE = "bergfex"              # Video source: "file", "live", "bergfex", "feratel"
+MAX_SECONDS = 120             # Maximum runtime in seconds
+CONF_THRESHOLD = 0.25         # Detection confidence (0.0-1.0)
 BASE_ROI_X1, BASE_ROI_Y1 = 200, 500    # Region of Interest
-BASE_ROI_X2, BASE_ROI_Y2 = 950, 900    # anpassen für andere Kameras
+BASE_ROI_X2, BASE_ROI_Y2 = 950, 900    # Adjust for other cameras
 ```
 
-## 📁 Projektstruktur
+## 📁 Project structure
 
 ```
-├── Ski_Lift_Wait_Time_Estimator_(Medium).ipynb  # Haupt-Notebook
+├── Ski_Lift_Wait_Time_Estimator_(Medium).ipynb  # Main notebook
 ├── src/
-│   ├── config.py          # Konfigurationsparameter
-│   └── utils.py           # Utility-Funktionen (URL-Extraktion, ROI)
-├── ski_cam_logs/          # CSV-Logs der Zählungen
-├── screenshots/           # Auto-Screenshots bei hoher Personenanzahl
-├── yolo11s-seg.pt         # YOLOv11 Segmentation Model
-└── requirements.txt       # Python Dependencies
+│   ├── config.py          # Configuration parameters
+│   └── utils.py           # Utility functions (URL extraction, ROI)
+├── ski_cam_logs/          # CSV logs of counts
+├── screenshots/           # Auto screenshots at high counts
+├── yolo11s-seg.pt         # YOLOv11 segmentation model
+└── requirements.txt       # Python dependencies
 ```
 
-## 🔧 Funktionsweise
+## 🔧 How it works
 
-### 1. Video-Erfassung
-- **File**: Lokale Videodatei
-- **Live**: YouTube Live-Stream (via yt-dlp)
-- **Bergfex**: Bergfex-Webcams (statisches Bild-Polling oder Stream)
-- **Feratel**: Feratel WebTV Streams
+### 1. Video capture
+- **File**: Local video file
+- **Live**: YouTube live stream (via yt-dlp)
+- **Bergfex**: Bergfex webcams (static image polling or stream)
+- **Feratel**: Feratel WebTV streams
 
-### 2. ROI-Definition & Skalierung
-Eine Region of Interest (ROI) wird auf Basis einer Referenzauflösung (2090×1164) definiert und automatisch auf die tatsächliche Stream-Auflösung skaliert.
+### 2. ROI definition and scaling
+The Region of Interest (ROI) is defined using a reference resolution (2090×1164) and automatically scaled to the actual stream resolution.
 
-### 3. Personendetektion
-1. YOLO Segmentation detektiert Personen (Class 0)
-2. ROI wird 2.5× hochskaliert für bessere Erkennung
-3. Masken werden generiert und auf Original-Größe zurückskaliert
-4. Kleine Fragmente werden gefiltert (< 200 Pixel)
-5. Nur Personen mit Zentroid innerhalb ROI werden gezählt
+### 3. People detection
+1. YOLO segmentation detects people (class 0)
+2. ROI is upscaled 2.5× for better detection
+3. Masks are generated and downscaled to the original size
+4. Small fragments are filtered out (< 200 pixels)
+5. Only people with centroids inside the ROI are counted
 
-### 4. Zählung & Logging
-- **Raw Count**: Direkte Anzahl detektierter Personen
-- **Smoothed Count**: Gleitender Durchschnitt über 15 Sekunden
-- Output: CSV mit Timestamp, Counts, gefilterte Detektionen
+### 4. Counting and logging
+- **Raw count**: Direct number of detected people
+- **Smoothed count**: Moving average over 15 seconds
+- Output: CSV with timestamp, counts, filtered detections
 
-### 5. Visualisierung
-- Grüne Masken-Overlays für gezählte Personen
-- ROI-Polygon als grüner Rahmen
-- Live-Stats im Frame (Personenanzahl, Zeit, FPS)
+### 5. Visualization
+- Green mask overlays for counted people
+- ROI polygon as a green outline
+- Live stats in the frame (people count, time, FPS)
 
 ## 📊 Output
 
-### CSV-Log
-Gespeichert in `ski_cam_logs/roi_counts_TIMESTAMP.csv`:
+### CSV log
+Saved to `ski_cam_logs/roi_counts_TIMESTAMP.csv`:
 
 ```csv
 frame_idx,epoch_time,local_time,raw_count,smoothed_count,filtered_out_count
@@ -101,22 +101,22 @@ frame_idx,epoch_time,local_time,raw_count,smoothed_count,filtered_out_count
 ```
 
 ### Screenshots
-Automatisch gespeichert in `screenshots/` wenn:
-- Personenanzahl ≥ 20
-- Min. 10 Sekunden seit letztem Screenshot
+Automatically saved in `screenshots/` when:
+- People count ≥ 20
+- At least 10 seconds since the last screenshot
 
-## ⚙️ Parameter-Tuning
+## ⚙️ Parameter tuning
 
-Wichtige Parameter in [src/config.py](src/config.py):
+Key parameters in [src/config.py](src/config.py):
 
-| Parameter | Standard | Beschreibung |
+| Parameter | Default | Description |
 |-----------|----------|--------------|
-| `CONF_THRESHOLD` | 0.25 | Confidence für Detektionen (höher = weniger False Positives) |
-| `MIN_MASK_AREA` | 200 | Minimale Pixelanzahl pro Person-Maske |
-| `SMOOTH_WINDOW_SEC` | 15 | Glättungsfenster in Sekunden |
-| `SCALE` | 2.5 | ROI-Upscaling für bessere Detektion |
-| `MAX_SECONDS` | 120 | Maximale Laufzeit (2 Minuten) |
+| `CONF_THRESHOLD` | 0.25 | Confidence for detections (higher = fewer false positives) |
+| `MIN_MASK_AREA` | 200 | Minimum pixel area per person mask |
+| `SMOOTH_WINDOW_SEC` | 15 | Smoothing window in seconds |
+| `SCALE` | 2.5 | ROI upscaling for better detection |
+| `MAX_SECONDS` | 120 | Maximum runtime (2 minutes) |
 
-**Mehr Detektionen:** `CONF_THRESHOLD` senken (z.B. 0.20)  
-**Weniger False Positives:** `CONF_THRESHOLD` erhöhen (z.B. 0.35), `MIN_MASK_AREA` erhöhen (z.B. 300)
+**More detections:** lower `CONF_THRESHOLD` (e.g., 0.20)  
+**Fewer false positives:** raise `CONF_THRESHOLD` (e.g., 0.35), raise `MIN_MASK_AREA` (e.g., 300)
 
