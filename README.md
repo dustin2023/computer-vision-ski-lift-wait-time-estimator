@@ -2,6 +2,9 @@
 
 Ein Computer Vision Projekt zur Schätzung der Wartezeit an Skiliften durch automatische Personenzählung mittels YOLOv11 Segmentation.
 
+![Screenshot mit 28 Personen](screenshot_20251215_140903_count28.jpg)
+
+
 ## 📋 Überblick
 
 Dieses Projekt nutzt Deep Learning zur Echtzeitanalyse von Webcam-Streams an Skiliften. Das System detektiert und zählt Personen in einer definierten Region of Interest (ROI) und erstellt Visualisierungen sowie Logs für statistische Auswertungen.
@@ -101,8 +104,6 @@ frame_idx,epoch_time,local_time,raw_count,smoothed_count,filtered_out_count
 Automatisch gespeichert in `screenshots/` wenn:
 - Personenanzahl ≥ 20
 - Min. 10 Sekunden seit letztem Screenshot
-
-![Screenshot mit 28 Personen](screenshot_20251215_140903_count28.jpg)
 
 ## ⚙️ Parameter-Tuning
 
