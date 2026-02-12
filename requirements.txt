@@ -1,0 +1,22 @@
+# Ski Lift Wait Time Estimator - Requirements
+# Python 3.8+
+
+# Computer Vision
+opencv-python==4.8.1.78
+torch==2.1.2
+torchvision==0.16.2
+ultralytics==8.0.223  # YOLO11
+
+# Data Processing
+numpy==1.24.3
+pandas==2.0.3
+pillow==10.0.1
+
+# Web & Streaming
+requests==2.31.0
+yt-dlp==2023.11.16
+streamlink==6.2.1
+
+# Utilities
+jupyter==1.0.0
+ipykernel==6.26.0
