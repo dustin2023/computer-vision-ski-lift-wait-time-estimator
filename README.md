@@ -102,6 +102,8 @@ Automatisch gespeichert in `screenshots/` wenn:
 - Personenanzahl ≥ 20
 - Min. 10 Sekunden seit letztem Screenshot
 
+![Screenshot mit 28 Personen](screenshot_20251215_140903_count28.jpg)
+
 ## ⚙️ Parameter-Tuning
 
 Wichtige Parameter in [src/config.py](src/config.py):
